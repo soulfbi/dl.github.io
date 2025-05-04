@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Code</title>
+</head>
+
+<body>
+    <pre id="mcp">
+        def mcp_neuron(inputs,threshold):
+        input_sum = sum(inputs)
+        return 1 if input_sum >= threshold else 0
+    binary_inputs = [0,1,1]
+    threshold = 2
+    output = mcp_neuron(binary_inputs,threshold)
+    print("output",output)
+
+    #And and or code
+    def mcp_neuron(inputs,threshold):
+    input_sum = sum(inputs)
+    if input_sum >= threshold:
+        print("mcp_neuron:",1)
+    else:
+        print("mcp_neuron:",0)
+        
+    if input_sum==3:
+        print("AND Gate:",1)
+    else:
+        print("AND Gate:",0)
+    
+    if input_sum==1 or input_sum==2 or input_sum==3:
+        print("OR Gate:",1)
+    else:
+        print("OR Gate:",0)
+
+binary_inputs = [1,1,0]
+threshold = 1
+mcp_neuron(binary_inputs,threshold)
+
+    </pre>
+    <pre id="sigmoid">
+        import numpy as np
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# Example usage
+x = np.array([-5, -1, 0, 1, 5])
+y = sigmoid(x)
+
+print("Input:", x)
+print("Sigmoid Output:", y)
+
+    </pre>
+    <pre id="perceptron">
+        def perceptron(inputs, weights, bias):
+    weighted_sum = np.dot(inputs, weights) + bias
+    # print(weighted_sum)
+    
+    if weighted_sum >= 0:
+        return 1
+    else:
+        return 0
+
+symptoms = np.array([1, 1])
+weights = np.array([0.5,0.5])
+bias = -0.7
+risk_level = perceptron(symptoms, weights, bias)
+print("At risk?" , "Yes" if risk_level == 1 else "No")
+    </pre>
+
+    <pre id="risk_level">
+        def isFever(inputs):
+    threshold=2
+    input_sum=sum(inputs)
+    if input_sum>=2:
+        return 1
+    else:
+        return 0
+
+symptoms=[0,1,0,1]
+
+Fever=isFever(symptoms) 
+
+if Fever:
+    print("You have Fever.")
+else:
+    print("You have no Fever.")
+
+sym=[]
+print("Note:\n1 for Yes\n0 for No")
+sym.append(int(input("\nDo You feel Cold?")))
+sym.append(int(input("Do You feel High Temprature?")))
+sym.append(int(input("Do You feel Head ache?")))
+sym.append(int(input("Do You feel Tired?")))
+fever=isFever(sym)
+
+if fever:
+    print("\nYou have Fever.")
+else:
+    print("\nYou have no Fever.")
+    </pre>
+
+    <pre id="feed_forward">
+        import numpy as np
+
+# Activation functions
+def tanh(x):
+    return np.tanh(x)
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# Inputs (3 neurons)
+i = np.array([0.6, 0.8, 0.3])
+
+# Weights for each layer
+# First hidden layer weights (3 inputs, 4 neurons)
+w1 = np.array([
+    [0.2, 0.4, 0.6, 0.8],
+    [0.5, 0.1, 0.9, 0.2],
+    [0.3, 0.8, 0.5, 0.7]
+])
+
+# Bias for first hidden layer (4 neurons)
+b1 = np.array([0.2, 0.3, 0.1, 0.4])
+
+# Calculate weighted sums and apply tanh activation for the first hidden layer
+A1 = np.dot(i, w1) + b1
+Z1 = tanh(A1)
+
+print("Weighted Sums for Layer 1:", A1)
+print("Outputs after tanh activation for Layer 1:", Z1)
+print("########################################################################")
+
+# The output of Layer 1 becomes input to Layer 2
+I2 = np.array(Z1)
+
+# Second hidden layer weights (4 neurons in the first hidden layer, 4 neurons in the second hidden layer)
+w2 = np.array([
+    [0.1, 0.5, 0.9, 0.3],
+    [0.3, 0.2, 0.8, 0.7],
+    [0.6, 0.7, 0.4, 0.2],
+    [0.8, 0.4, 0.5, 0.1]
+])
+
+# Bias for second hidden layer (4 neurons)
+b2 = np.array([0.2, 0.1, 0.3, 0.5])
+
+# Calculate weighted sums and apply tanh activation for the second hidden layer
+A2 = np.dot(I2, w2) + b2
+Z2 = tanh(A2)
+
+print("Weighted Sums for Layer 2:", A2)
+print("Outputs after tanh activation for Layer 2:", Z2)
+print("########################################################################")
+
+# The output of Layer 2 becomes input to Layer 3
+I3 = np.array(Z2)
+
+# Third hidden layer weights (4 neurons in the second hidden layer, 4 neurons in the third hidden layer)
+w3 = np.array([
+    [0.7, 0.3, 0.9, 0.5],
+    [0.5, 0.8, 0.2, 0.4],
+    [0.4, 0.6, 0.7, 0.1],
+    [0.2, 0.1, 0.3, 0.8]
+])
+
+# Bias for third hidden layer (4 neurons)
+b3 = np.array([0.3, 0.4, 0.2, 0.1])
+
+# Calculate weighted sums and apply tanh activation for the third hidden layer
+A3 = np.dot(I3, w3) + b3
+Z3 = tanh(A3)
+
+print("Weighted Sums for Layer 3:", A3)
+print("Outputs after tanh activation for Layer 3:", Z3)
+print("########################################################################")
+
+# The output of Layer 3 becomes input to the output layer
+I4 = np.array(Z3)
+
+# Correct the weight matrix for the output layer (4 neurons from the last hidden layer, 1 output neuron)
+w4 = np.array([
+    [0.6],
+    [0.2],
+    [0.7],
+    [0.4]
+])
+
+# Bias for output layer (1 neuron)
+b4 = np.array([0.4])
+
+# Calculate weighted sum and apply sigmoid activation for the output layer
+A4 = np.dot(I4, w4) + b4
+Z4 = sigmoid(A4)
+
+print("Weighted Sums for Output Layer:", A4)
+print("Outputs after Sigmoid activation for Output Layer:", Z4)
+print("########################################################################")
+    </pre>
+
+    <pre id="mse">
+        import numpy as np
+# Sigmoid Activation Function
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# Input Vector
+A = [[2, 5, 1]]
+# Weights for each layer
+
+Weights = [
+[[0.1, 0.2],
+[0.3, 0.4],
+
+[0.5, 0.6]],
+[[0.7, 0.8],
+[0.9, 0.1]]
+]
+# Biases for each layer
+Bias = [
+[[0.5, 0.5]],
+[[0.5, 0.5]]
+]
+# Forward Pass - Layer 1
+Z1 = np.dot(A, Weights[0]) + Bias[0]
+A1 = sigmoid(Z1)
+print("=== Layer 1 ===")
+print("Z1:", Z1)
+print("A1:", A1)
+# Forward Pass - Layer 2
+Z2 = np.dot(A1, Weights[1]) + Bias[1]
+A2 = sigmoid(Z2)
+print("\n=== Layer 2 ===")
+print("Z2:", Z2)
+print("A2:", A2)
+# Target Output
+y = [[1, 0]]
+# Mean Squared Error Loss
+loss_elements = (A2 - y) ** 2
+loss = np.sum(loss_elements) / 2
+print("\n=== Loss Calculation ===")
+print("Squared Error per output unit:", loss_elements)
+print("Mean Squared Error (MSE) Loss:", loss)
+    </pre>
+
+    <pre id="pca">
+        import numpy as np
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        from sklearn.decomposition import PCA
+        from sklearn.preprocessing import StandardScaler
+        
+        # Step 2: Load the Dataset
+        df = pd.read_csv("height_weight.csv")
+        
+        # Step 3: Standardize the Data
+        scaler = StandardScaler()
+        standardized_data = scaler.fit_transform(df)
+        
+        # Step 4: Apply PCA
+        pca = PCA(n_components=2)
+        pca_result = pca.fit_transform(standardized_data)
+        
+        # Step 5: Convert PCA Results into a Structured Format
+        pca_df = pd.DataFrame(pca_result, columns=['PC1', 'PC2'])
+        print("PCA Transformed Data:")
+        print(pca_df)
+        
+        # Step 6: Check Explained Variance Ratio
+        explained_variance = pca.explained_variance_ratio_
+        print("Explained Variance Ratio:", explained_variance)
+        
+        # Step 7: Visualize the PCA Transformation
+        plt.scatter(pca_df['PC1'], pca_df['PC2'], color='blue', label='Individuals')
+        plt.axhline(y=0, color='k', linestyle='--')
+        plt.axvline(x=0, color='k', linestyle='--')
+        plt.xlabel('Principal Component 1')
+        plt.ylabel('Principal Component 2')
+        plt.title('PCA Transformation of Height & Weight')
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+        
+        # Step 8: Interpret Results
+        if explained_variance[1] < 0.05:
+            print("PC2 holds very little information and can be discarded, reducing data to 1D.")
+        
+    </pre>
+
+    <pre id="linear">
+        import tensorflow as tf
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, r2_score
+
+# Load dataset from CSV
+df = pd.read_csv("linear_regression_data.csv")
+
+# Extract features and target
+X = df["X"].values.reshape(-1, 1)
+y = df["y"].values.reshape(-1, 1)
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Define the model
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(units=1, input_shape=[1])  # One input, one output
+])
+
+# Compile the model
+model.compile(optimizer='sgd', loss='mean_squared_error')
+
+# Train the model
+history = model.fit(X_train, y_train, epochs=100, verbose=1)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+mae = mean_absolute_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f"Mean Absolute Error: {mae:.2f}")
+print(f"R² Score: {r2:.2f}")
+
+# Plot results
+plt.scatter(X_test, y_test, color='blue', label="Actual Data")
+plt.plot(X_test, y_pred, color='red', linewidth=2, label="Predicted Line")
+plt.xlabel("X (Input Feature)")
+plt.ylabel("y (Target)")
+plt.title("Linear Regression with TensorFlow")
+plt.legend()
+plt.show()
+    </pre>
+
+    <pre id="logistic">
+        import numpy as np
+import pandas as pd
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+
+df = pd.read_csv('heart_disease_data.csv')
+
+print(df.head())
+
+print(df.isnull().sum())
+
+# Select features (X) and target variable (Y)
+X = df[['age', 'blood_pressure', 'cholesterol', 'physical_activity_level']].values
+y = df['heart_disease'].values  # 0 = No, 1 = Yes
+
+# Normalize the feature values (Standardization)
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
+
+# Split the dataset into training (80%) and testing (20%) sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Define a simple Logistic Regression model
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(1, activation='sigmoid', input_shape=(X.shape[1],))  # Single neuron with sigmoid activation
+])
+
+# Compile the model with loss function & optimizer
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+# Display model summary
+model.summary()
+
+# Train the model
+history = model.fit(X_train, y_train, epochs=20, batch_size=10, validation_data=(X_test, y_test))
+
+# Evaluate model on test data
+loss, accuracy = model.evaluate(X_test, y_test)
+print(f"Test Accuracy: {accuracy:.4f}")
+
+# Make predictions
+y_pred = model.predict(X_test)
+y_pred_classes = (y_pred > 0.5).astype(int)  # Convert probabilities to binary class labels
+
+# Compute Confusion Matrix
+conf_matrix = confusion_matrix(y_test, y_pred_classes)
+print("Confusion Matrix:\n", conf_matrix)
+
+# Classification Report
+print("Classification Report:\n", classification_report(y_test, y_pred_classes))
+
+# Visualize Confusion Matrix
+plt.figure(figsize=(5, 4))
+sns.heatmap(conf_matrix, annot=True, cmap='Blues', fmt='d', xticklabels=["No", "Yes"], yticklabels=["No", "Yes"])
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()
+
+# Example new patient data: [age, blood_pressure, cholesterol, physical_activity_level]
+new_patient = np.array([[50, 130, 210, 3]])  # Example patient
+
+# Scale the input using the same scaler
+new_patient_scaled = scaler.transform(new_patient)
+
+# Predict the probability of heart disease
+prediction = model.predict(new_patient_scaled)
+predicted_class = (prediction > 0.5).astype(int)[0][0]  # Convert probability to class (0 or 1)
+
+print(f"Predicted Probability: {prediction[0][0]:.4f}")
+print(f"Heart Disease Prediction: {'Yes' if predicted_class == 1 else 'No'}")
+
+# Plot accuracy over epochs
+plt.figure(figsize=(8, 4))
+plt.plot(history.history['accuracy'], label='Train Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.title('Training and Validation Accuracy')
+plt.legend()
+plt.show()
+
+# Plot loss over epochs
+plt.figure(figsize=(8, 4))
+plt.plot(history.history['loss'], label='Train Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.title('Training and Validation Loss')
+plt.legend()
+plt.show()
+
+    </pre>
+
+    <pre id="stopwords">
+        #Remove Stopwords and Punctuation
+import string
+from nltk.corpus import stopwords
+import nltk
+nltk.download('stopwords')
+
+def clean_text(text):
+    stop_words = set(stopwords.words('english'))
+    text = text.lower()
+    text = ''.join([char for char in text if char not in string.punctuation])
+    words = text.split()
+    filtered_words = [word for word in words if word not in stop_words]
+    return ' '.join(filtered_words)
+
+text = "Hello! How are you ? this is sentence , with punctuation!"
+print(clean_text(text))
+    </pre>
+
+    <pre id="tf_idf">
+        from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+sentences = [
+    "This is the first sentence.",
+    "This sentence is the second sentence.",
+    "And this is the third one.",
+    "Is this the first sentence?"
+]
+
+
+vectorizer = TfidfVectorizer()
+
+
+tfidf_matrix = vectorizer.fit_transform(sentences)
+
+
+feature_names = vectorizer.get_feature_names_out()
+
+
+tfidf_array = tfidf_matrix.toarray()
+
+
+print("Feature Names:", feature_names)
+print("\nTF-IDF Matrix:")
+for i, row in enumerate(tfidf_array):
+    print(f"Sentence {i+1}: {row}")
+
+    </pre>
+
+    <pre id="autoencoder">
+        import numpy as np
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.optimizers import Adam
+
+def simple_autoencoder(input_data, encoding_dim=2, epochs=50):
+    input_dim = input_data.shape[1]
+
+    # Define encoder
+    input_layer = Input(shape=(input_dim,))
+    encoded = Dense(encoding_dim, activation='relu')(input_layer)
+
+    # Define decoder
+    decoded = Dense(input_dim, activation='sigmoid')(encoded)
+
+    # Autoencoder model
+    autoencoder = Model(inputs=input_layer, outputs=decoded)
+
+    # Encoder model
+    encoder = Model(inputs=input_layer, outputs=encoded)
+
+    # Compile and train
+    autoencoder.compile(optimizer=Adam(), loss='mse')
+    autoencoder.fit(input_data, input_data, epochs=epochs, verbose=0)
+
+    # Encode and reconstruct
+    encoded_data = encoder.predict(input_data)
+    reconstructed_data = autoencoder.predict(input_data)
+
+    return encoded_data, reconstructed_data
+
+# Generate dummy input data
+data = np.random.rand(10, 4)  # 10 samples, 4 features
+
+# Encode and reconstruct
+encoded, reconstructed = simple_autoencoder(data)
+
+print("Encoded:\n", encoded)
+print("\nReconstructed:\n", reconstructed)
+
+
+    </pre>
+
+    <pre id="convolved">
+        import numpy as np
+from PIL import Image
+import matplotlib.pyplot as plt
+# Load and convert image to grayscale
+image = Image.open("lion.jpg").convert("L")  # "L" mode = grayscale
+image_array = np.array(image)
+
+# 3x3 convolution kernel (e.g., edge detection)
+kernel = np.array([
+    [-1, -1, -1],
+    [-1,  8, -1],
+    [-1, -1, -1]
+])
+
+# Get image dimensions
+image_height, image_width = image_array.shape
+kernel_height, kernel_width = kernel.shape
+
+# Pad the image to keep the same size after convolution
+padded_image = np.pad(image_array, pad_width=1, mode='constant', constant_values=0)
+
+# Prepare the output image
+output = np.zeros((image_height, image_width))
+
+# Apply convolution
+for i in range(image_height):
+    for j in range(image_width):
+        region = padded_image[i:i+kernel_height, j:j+kernel_width]
+        output[i, j] = np.sum(region * kernel)
+
+# Clip values to 0-255 and convert to uint8
+output = np.clip(output, 0, 250).astype(np.uint8)
+
+# Show the images
+plt.figure(figsize=(10, 5))
+plt.subplot(1, 2, 1)
+plt.title("Original Grayscale Image")
+plt.imshow(image_array, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title("Convolved Image")
+plt.imshow(output, cmap='gray')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+    </pre>
+
+    <pre id="ResNet">
+        import numpy as np
+        from PIL import Image
+        import matplotlib.pyplot as plt #Fixed: This line was incorrect
+        import torch
+        import torchvision.transforms as transforms
+        from torchvision import models
+        from PIL import Image
+        #import matplotlib.pyplot as plt #Fixed: This was a duplicate import
+        
+        # Load pretrained ResNet50
+        model = models.resnet50(pretrained=True)
+        model.eval()  # Set to evaluation mode
+        
+        # Image preprocessing (same as what ResNet50 expects)
+        preprocess = transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=[0.485, 0.456, 0.406],  # ImageNet mean
+                std=[0.229, 0.224, 0.225]    # ImageNet std
+            )
+        ])
+        
+        # Load and preprocess the image
+        img_path = 'lion.jpg'  # Change to your image file
+        image = Image.open(img_path).convert('RGB')
+        input_tensor = preprocess(image).unsqueeze(0)  # Add batch dimension
+        
+        # Run the image through the model
+        with torch.no_grad():
+            output = model(input_tensor)
+            probabilities = torch.nn.functional.softmax(output[0], dim=0)
+        
+        # Get top 5 predictions
+        top5_prob, top5_catid = torch.topk(probabilities, 5)
+        
+        # Load labels (from ImageNet)
+        import json
+        import urllib.request
+        url = 'https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt'
+        class_names = urllib.request.urlopen(url).read().decode('utf-8').splitlines()
+        
+        # Display the image and predictions
+        plt.imshow(image)
+        plt.axis('off')
+        plt.title("Image Classification with ResNet50")
+        plt.show()
+        
+        print("Top 5 Predictions:")
+        for i in range(top5_prob.size(0)):
+            print(f"{class_names[top5_catid[i]]}: {top5_prob[i].item()*100:.2f}%")
+        #Fixed: Removed the incorrect 'as plt' line which caused the IndentationError
+        
+    </pre>
+</body>
+</html>
