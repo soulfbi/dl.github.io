@@ -25,6 +25,18 @@
         greyscale to convolution= convolved
         Image Classification using ResNet50=  ResNet
 
+        Implement all activation function= activation
+        Construct two layed perceptron using sigmoid and softmax= sigmoid_softmax
+        Build NN model using Tensorflow and feed forward= tensor_feed_forward
+
+        With word2Vec analogy =word2vec_analogy
+        With fasttext analogy= fasttext_analogy
+        # word2Vec similar top 7 words= similar_7words
+        # Fasttext similar top 7 words= fasttext_similar
+        # paragraph to sentence= para_to_sentences
+
+
+
     </pre>
 
 
@@ -92,35 +104,24 @@ print("At risk?" , "Yes" if risk_level == 1 else "No")
     </pre>
 
     <pre id="risk_level">
-        def isFever(inputs):
+        # We used and gate
+def isFever(inputs):
     threshold=2
+
     input_sum=sum(inputs)
     if input_sum>=2:
         return 1
-    else:
+    else: 
         return 0
 
 symptoms=[0,1,0,1]
 
-Fever=isFever(symptoms) 
+Fever=isFever(symptoms)
 
-if Fever:
+if Fever: 
     print("You have Fever.")
 else:
     print("You have no Fever.")
-
-sym=[]
-print("Note:\n1 for Yes\n0 for No")
-sym.append(int(input("\nDo You feel Cold?")))
-sym.append(int(input("Do You feel High Temprature?")))
-sym.append(int(input("Do You feel Head ache?")))
-sym.append(int(input("Do You feel Tired?")))
-fever=isFever(sym)
-
-if fever:
-    print("\nYou have Fever.")
-else:
-    print("\nYou have no Fever.")
     </pre>
 
     <pre id="feed_forward">
@@ -222,6 +223,126 @@ print("Outputs after Sigmoid activation for Output Layer:", Z4)
 print("########################################################################")
     </pre>
 
+    <pre id="activation">
+        import numpy as np
+
+x=[[0.6,0.8,0.3]]
+
+weights = [
+        [[0.2,0.5,0.3,0.7],
+        [0.4,0.1,0.8,0.2],
+        [0.6,0.9,0.5,0.3],], 
+
+        [[0.1,0.3,0.6,0.8],
+        [0.5,0.2,0.7,0.4],
+        [0.9,0.8,0.4,0.5],
+        [0.3,0.7,0.2,0.1]], 
+
+        [[0.7,0.5,0.4,0.2],
+        [0.3,0.8,0.6,0.1],
+        [0.9,0.2,0.7,0.3],
+        [0.5,0.4,0.1,0.8]], 
+
+        [[0.6,0.9],
+        [0.2,0.3],
+        [0.7,0.5],
+        [0.4,0.8]]
+    ]
+
+biases = [
+        [[0.2,0.2,0.2,0.2]],
+        [[0.3,0.3,0.3,0.3]],
+        [[0.1,0.1,0.1,0.1]],
+        [[0.4,0.4]],
+    ]
+
+A0=x[0]
+Z1 = np.dot(A0, weights[0]) + biases[0]
+# Sigmoid 
+A1 = 1 / (1 + np.exp(-Z1))
+print("Sigmoid:",A1)
+
+Z2 = np.dot(A1, weights[1]) + biases[1]
+# tanh
+A2 = (np.exp(Z2)-np.exp(-Z2))/(np.exp(Z2)+np.exp(-Z2))
+print("Tanh:",A2)
+
+Z3 = np.dot(A2, weights[2]) + biases[2]
+# Relu
+A3 = np.maximum(0, Z3)
+print("Relu:",A3)
+
+Z4 = np.dot(A3, weights[3]) + biases[3]
+# Softmax
+output=np.exp(Z4)/np.sum(np.exp(Z4))
+print("Softmax:",output)
+    </pre>
+
+    <pre id="sigmoid_softmax">
+        import numpy as np
+import matplotlib.pyplot as plt
+
+x=[[0.6,0.8,0.3,0.7]]
+weights = [
+        [[0.2,0.5,0.3,0.7],
+        [0.4,0.1,0.8,0.2],
+        [0.6,0.9,0.5,0.3],
+        [0.8,0.2,0.7,0.6]], 
+
+        [[0.1,0.3,0.6,0.8],
+        [0.5,0.2,0.7,0.4],
+        [0.9,0.8,0.4,0.5],
+        [0.3,0.7,0.2,0.1]], 
+
+        [[0.6,0.9],
+        [0.2,0.3],
+        [0.7,0.5],
+        [0.4,0.8]]
+    ]
+
+biases = [
+        [[0.2,0.2,0.2,0.2]],
+        [[0.3,0.3,0.3,0.3]],
+        [[0.4,0.4]],
+    ]
+
+Z1 = np.dot(x, weights[0]) + biases[0]
+A1=1 / (1 + np.exp(-Z1))
+
+x = np.linspace(-10, 10, 100) 
+z = 1/(1 + np.exp(-x))
+plt.plot(x, z) 
+plt.scatter(Z1,A1,color='r')
+plt.xlabel("x") 
+plt.ylabel("Sigmoid(X)") 
+  
+plt.show()
+
+
+Z2 = np.dot(A1, weights[1]) + biases[1]
+A2=1 / (1 + np.exp(-Z2))
+
+plt.plot(x, z) 
+plt.scatter(Z2,A2,color='r')
+plt.xlabel("x") 
+plt.ylabel("Sigmoid(X)") 
+  
+plt.show() 
+
+
+Z3 = np.dot(A2, weights[2]) + biases[2]
+# softmax
+output=np.exp(Z3)/np.sum(np.exp(Z3))
+
+plt.plot(range(len(output[0])), output[0], marker='o', label="Softmax Probabilities", color="orange")
+plt.title("Softmax Output")
+plt.xlabel("Class Index")
+plt.ylabel("Probability")
+plt.grid()
+plt.legend()
+plt.show()
+    </pre>
+
     <pre id="mse">
         import numpy as np
 # Sigmoid Activation Function
@@ -235,8 +356,8 @@ A = [[2, 5, 1]]
 Weights = [
 [[0.1, 0.2],
 [0.3, 0.4],
-
 [0.5, 0.6]],
+
 [[0.7, 0.8],
 [0.9, 0.1]]
 ]
@@ -460,6 +581,58 @@ plt.show()
 
     </pre>
 
+    <pre id="tensor_feed_forward">
+        import tensorflow as tf
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+data = pd.read_csv('house_prices.csv')
+data.head(3)
+
+data.describe()
+
+data.info()
+
+X = data[['square_footage', 'num_bedrooms', 'age_of_house']].values
+y = data['house_price'].values
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(64, activation='relu', input_shape=(3,)),  # Input layer with 3 features
+    tf.keras.layers.Dense(32, activation='relu'),  # Hidden layer
+    tf.keras.layers.Dense(1)  # Output layer for regression
+])
+
+model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
+
+        def forward_propagation(model, input_data):
+    return model(input_data)
+
+sample_input = tf.convert_to_tensor(X_test[:5], dtype=tf.float32)
+predictions = forward_propagation(model, sample_input)
+
+model.fit(X_train, y_train, epochs=50, batch_size=32, validation_split=0.2)
+
+test_loss, test_mae = model.evaluate(X_test, y_test)
+print(f'Test Loss: {test_loss}, Test MAE: {test_mae}')
+
+predictions = model.predict(X_test)
+
+comparison_df = pd.DataFrame({'Actual': y_test, 'Predicted': predictions.flatten()})
+print(comparison_df.head())
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 6))
+plt.scatter(y_test, predictions, alpha=0.5)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')  # Line for perfect predictions
+plt.xlabel('Actual Prices')
+plt.ylabel('Predicted Prices')
+plt.title('Actual vs Predicted House Prices')
+plt.show()
+    </pre>
+
     <pre id="stopwords">
         #Remove Stopwords and Punctuation
 import string
@@ -480,6 +653,28 @@ print(clean_text(text))
     </pre>
 
     <pre id="word2vec">
+        from gensim.models import Word2Vec
+from datasets import load_dataset
+
+# Load IMDb dataset (train split)
+dataset = load_dataset("imdb")
+sample_reviews = dataset['train']['text'][:500]  # Using first 500 reviews for training
+
+# Clean all reviews using the clean_text function
+cleaned_reviews = [clean_text(text) for text in sample_reviews]
+
+# Train Word2Vec model
+w2v_model = Word2Vec(sentences=cleaned_reviews, vector_size=100, window=5, min_count=5, workers=4)
+
+# Display most similar words to a given word (e.g., "movie")
+word = "movie"
+if word in w2v_model.wv:
+    print(f"Words similar to '{word}':")
+    print(w2v_model.wv.most_similar(word))
+else:
+    print(f"'{word}' not found in vocabulary.")
+
+
         from gensim.models import Word2Vec
 from nltk.tokenize import word_tokenize
 import nltk
@@ -697,6 +892,86 @@ plt.show()
             print(f"{class_names[top5_catid[i]]}: {top5_prob[i].item()*100:.2f}%")
         #Fixed: Removed the incorrect 'as plt' line which caused the IndentationError
         
+    </pre>
+
+    <pre id="word2vec_analogy">
+        import gensim.downloader as api
+import numpy as np
+print("Loading model...")
+model = api.load('word2vec-google-news-300') 
+print("Model loaded successfully!")
+word_a, word_b, word_c = 'delhi', 'india', 'colombo'
+result = model.most_similar(positive=[word_b, word_c], negative=[word_a], topn=1)
+word_d = result[0][0]
+print(f"'{word_a}' : '{word_b}' :: '{word_c}' :'{word_d}'")
+    </pre>
+
+    <pre id="fasttext_analogy">
+        import gensim.downloader as api
+import numpy as np
+print("Loading FastText model...")
+model = api.load('fasttext-wiki-news-subwords-300')
+print("Model loaded successfully!")
+word_a, word_b, word_c = 'delhi', 'india', 'colombo'
+result = model.most_similar(positive=[word_b, word_c], negative=[word_a], topn=1)
+word_d = result[0][0]
+print(f"'{word_a}' : '{word_b}' :: '{word_c}' : '{word_d}'")
+    </pre>
+
+    <pre id="similar_7words">
+        import gensim.downloader as api
+print("Loading Word2Vec model...")
+model = api.load('word2vec-google-news-300')
+print("Model loaded successfully!")
+input_word = 'king' 
+similar_words = model.most_similar(input_word, topn=7)
+print(f"Top 7 words similar to '{input_word}':")
+for word, similarity in similar_words:
+    print(word)
+    </pre>
+
+    <pre id="fasttext_similar">
+        import gensim.downloader as api
+print("Loading FastText model...")
+model = api.load('fasttext-wiki-news-subwords-300')  # ~1GB
+print("Model loaded successfully!")
+input_word = 'paris'
+similar_words = model.most_similar(input_word, topn=7)
+print(f"Top 7 words similar to '{input_word}':")
+for word in similar_words:
+    print(word)
+    </pre>
+
+    <pre id="para_to_sentences">
+        import gensim.downloader as api
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import spacy
+print("Loading SpaCy model...")
+nlp = spacy.load('en_core_web_sm')  
+print("SpaCy model loaded.")
+print("Loading FastText model...")
+model = api.load('fasttext-wiki-news-subwords-300')  # ~1GB
+print("FastText model loaded.")
+paragraph = """
+Artificial Intelligence is changing the world. It is being used in healthcare, education, and finance.
+AI systems can diagnose diseases and automate tedious tasks. The future of AI is both exciting and uncertain.
+"""
+doc = nlp(paragraph)
+sentences = [sent.text.strip() for sent in doc.sents]
+def sentence_to_vec(sentence, model):
+    words = [token.text.lower() for token in nlp(sentence) if token.is_alpha]
+    vectors = [model[word] for word in words if word in model]
+    return np.mean(vectors, axis=0) if vectors else np.zeros(model.vector_size)
+sentence_vectors = [sentence_to_vec(sent, model) for sent in sentences]
+paragraph_vector = np.mean(sentence_vectors, axis=0)
+similarities = [cosine_similarity([vec], [paragraph_vector])[0][0] for vec in sentence_vectors]
+most_rep_index = np.argmax(similarities)
+most_rep_sentence = sentences[most_rep_index]
+print("\nSentences and their similarity to the paragraph:")
+for i, sent in enumerate(sentences):
+    print(f"{i+1}. {sent} (Similarity: {similarities[i]:.4f})")
+print(f"\n✅ Most representative sentence:\n\"{most_rep_sentence}\"")
     </pre>
 </body>
 </html>
