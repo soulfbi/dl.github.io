@@ -8,6 +8,26 @@
 </head>
 
 <body>
+    <pre id="keywords">
+        McCulloch Pitts=mcp
+        Sigmoid using NumPy= sigmoid
+        Perception=perceptron
+        McCulloch Pitts risk_level= risk_level
+        Feed Forward= feed_forward
+        Loss function use MSE= mse
+        Principal Component Analysis= pca
+        Linear Regression= linear
+        Logistic Regression= logistic
+        Remove stopwords and punctuation= stopwords
+        Convert sentences into TF_IDf= tf_idf
+        Encoded an input and reconstruct= autoencoder
+        Word2Vec= word2vec
+        greyscale to convolution= convolved
+        Image Classification using ResNet50=  ResNet
+
+    </pre>
+
+
     <pre id="mcp">
         def mcp_neuron(inputs,threshold):
         input_sum = sum(inputs)
@@ -457,6 +477,44 @@ def clean_text(text):
 
 text = "Hello! How are you ? this is sentence , with punctuation!"
 print(clean_text(text))
+    </pre>
+
+    <pre id="word2vec">
+        from gensim.models import Word2Vec
+from nltk.tokenize import word_tokenize
+import nltk
+
+# Ensure 'punkt' tokenizer is available
+nltk.download('punkt')
+
+# Function to train Word2Vec and find similar words
+def train_and_find_similar_words(sentences, target_word, topn=5):
+    # Tokenize sentences
+    tokenized_sentences = [word_tokenize(sentence.lower()) for sentence in sentences]
+    
+    # Train Word2Vec model
+    model = Word2Vec(sentences=tokenized_sentences, vector_size=100, window=5, min_count=1, workers=4)
+
+    # Check if the word is in the vocabulary
+    if target_word in model.wv:
+        similar_words = model.wv.most_similar(target_word, topn=topn)
+        return similar_words
+    else:
+        return f"Word '{target_word}' not found in vocabulary."
+
+# Example sentences
+sentences = [
+    "The quick brown fox jumps over the lazy dog.",
+    "Word2Vec is a powerful tool for learning word embeddings.",
+    "Foxes are wild animals.",
+    "Dogs are loyal pets.",
+    "Word embeddings capture semantic similarity."
+]
+
+# Find words similar to "fox"
+similar = train_and_find_similar_words(sentences, target_word="fox")
+print(similar)
+
     </pre>
 
     <pre id="tf_idf">
